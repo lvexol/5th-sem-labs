@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
-int main() {
-    setlocale(LC_ALL, ""); // Set the locale to the user's default locale
+int main() {// Set the locale to the user's default locale
     
     time_t currentTime;
     struct tm *localTime;
