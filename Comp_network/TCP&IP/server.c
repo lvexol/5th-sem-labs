@@ -10,7 +10,6 @@
 
 void chat(int connfd) {
     char buff[MAX];
-
     while (1) {
         memset(buff, 0, MAX); // Clear buffer
         read(connfd, buff, sizeof(buff)); // Read message from client
