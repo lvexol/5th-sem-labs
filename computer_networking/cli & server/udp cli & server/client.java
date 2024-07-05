@@ -2,54 +2,25 @@ import java.io.*;
 import java.net.*;
  
 public class Client {
-        private Socket socket = null;
-    private DataInputStream input = null;
-    private DataOutputStream out = null;
+   public static void main(String args[]) throws IOException
+   {
+       // create a socket to connect to the server running on localhost at port number 9090
+       Socket socket = new Socket("localhost", 9090);
+       
+       // Setup output stream to send data to the server
+       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+       
+       // Setup input stream to receive data from the server
+       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
  
-        public Client(String address, int port)
-    {
-        try {
-            socket = new Socket(address, port);
-            System.out.println("Connected");
+       // Send message to the server
+       out.println("Hello from client!");
  
-            input = new DataInputStream(System.in);
+       // Receive response from the server
+       String response = in.readLine();
+       System.out.println("Server says: " + response);
  
-                        out = new DataOutputStream(
-                socket.getOutputStream());
-        }
-        catch (UnknownHostException u) {
-            System.out.println(u);
-            return;
-        }
-        catch (IOException i) {
-            System.out.println(i);
-            return;
-        }
- 
-                String line = "";
- 
-                while (!line.equals("Over")) {
-            try {
-                line = input.readLine();
-                out.writeUTF(line);
-            }
-            catch (IOException i) {
-                System.out.println(i);
-            }
-        }
- 
-                try {
-            input.close();
-            out.close();
-            socket.close();
-        }
-        catch (IOException i) {
-            System.out.println(i);
-        }
-    }
- 
-    public static void main(String args[])
-    {
-        Client client = new Client("127.0.0.1", 5000);
-    }
+       // Close the socket
+       socket.close();
+   }
 }
