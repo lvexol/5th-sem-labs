@@ -1,58 +1,30 @@
-import java.net.*;
 import java.io.*;
+import java.net.*;
  
-public class Server
-{
-    private Socket          socket   = null;
-    private ServerSocket    server   = null;
-    private DataInputStream in       =  null;
+public class Server {
+   public static void main(String args[]) throws IOException
+   {
+       // create a server socket on port number 9090
+       ServerSocket serverSocket = new ServerSocket(9090);
+       System.out.println("Server is running and waiting for client connection...");
  
-        public Server(int port)
-    {
-        // starts server and waits for a connection
-        try
-        {
-            server = new ServerSocket(port);
-            System.out.println("Server started");
+       // Accept incoming client connection
+       Socket clientSocket = serverSocket.accept();
+       System.out.println("Client connected!");
  
-            System.out.println("Waiting for a client ...");
+       // Setup input and output streams for communication with the client
+       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+       PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
  
-            socket = server.accept();
-            System.out.println("Client accepted");
+       // Read message from client
+       String message = in.readLine();
+       System.out.println("Client says: " + message);
  
-            
-            in = new DataInputStream(
-                new BufferedInputStream(socket.getInputStream()));
+       out.println("Message received by the server.");
  
-            String line = "";
- 
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = in.readUTF();
-                    System.out.println(line);
- 
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i);
-                }
-            }
-            System.out.println("Closing connection");
- 
-                        socket.close();
-            in.close();
-        }
-        catch(IOException i)
-        {
-            System.out.println(i);
-        }
-    }
- 
-    public static void main(String args[])
-    {
-        Server server = new Server(5000);
-    }
+       
+       clientSocket.close();
+       // Close the server socket
+       serverSocket.close();
+   }
 }
-
