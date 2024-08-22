@@ -1,0 +1,8 @@
+#include <stdio.h>
+
+int main(){
+	int* ptr=(int*)malloc(sizeof(int));
+	//in here we must check for the returned value of pointer is not null
+	//if(*ptr==NULL){printf("this is wrong;")}
+	free(ptr);
+}
